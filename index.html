@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AntiGravity Workout Planner</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/planner.css">
+    <link rel="stylesheet" href="css/library.css">
+    <link rel="stylesheet" href="css/tracker.css">
+    <link rel="stylesheet" href="css/programs.css">
+    <link rel="stylesheet" href="css/timer.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+    <div id="stars-container"></div>
+
+    <div id="app">
+        <!-- Header -->
+        <header class="main-header glass-card">
+            <div class="logo-container">
+                <i class="fa-solid fa-user-astronaut floating-icon"></i>
+                <div class="logo-text">
+                    <h1>AntiGravity</h1>
+                    <p class="tagline">Train Like Gravity Doesn't Exist</p>
+                </div>
+            </div>
+            <div class="user-greeting">
+                <p id="greeting-text">Ready for liftoff, Aman?</p>
+                <span id="current-date" class="date-badge">Loading...</span>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Grid -->
+        <main class="dashboard-grid">
+            <!-- Stats Row -->
+            <section class="stats-row">
+                <div class="stat-card glass-card" data-tilt>
+                    <div class="stat-icon"><i class="fa-solid fa-fire text-accent"></i></div>
+                    <div class="stat-info">
+                        <h3>Calories</h3>
+                        <p class="stat-value count-up" data-target="0">0</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-card" data-tilt>
+                    <div class="stat-icon"><i class="fa-solid fa-stopwatch text-secondary"></i></div>
+                    <div class="stat-info">
+                        <h3>Time (min)</h3>
+                        <p class="stat-value count-up" data-target="0">0</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-card" data-tilt>
+                    <div class="stat-icon"><i class="fa-solid fa-dumbbell text-primary"></i></div>
+                    <div class="stat-info">
+                        <h3>Exercises</h3>
+                        <p class="stat-value count-up" data-target="0">0</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-card" data-tilt>
+                    <div class="stat-icon"><i class="fa-solid fa-trophy text-success"></i></div>
+                    <div class="stat-info">
+                        <h3>Streak</h3>
+                        <p class="stat-value count-up" data-target="0">0</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Workflow Planner Section -->
+            <section id="planner-section" class="planner-container">
+                <!-- Weekly Calendar -->
+                <div class="calendar-wrapper glass-card">
+                    <div class="week-header">
+                        <h2>Mission Timeline</h2>
+                        <div class="week-controls">
+                            <button class="btn-icon" id="prev-week"><i class="fa-solid fa-chevron-left"></i></button>
+                            <span id="current-week-label">Feb 12 - 18</span>
+                            <button class="btn-icon" id="next-week"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="days-row" id="calendar-days">
+                        <!-- Days injected via JS -->
+                    </div>
+                </div>
+
+                <div class="planner-grid">
+                    <!-- Workout List -->
+                    <div class="workout-list-container glass-card">
+                        <div class="section-header">
+                            <h3><i class="fa-solid fa-clipboard-list text-secondary"></i> Daily Log</h3>
+                            <div class="header-actions">
+                                <button class="btn btn-secondary" onclick="startWorkoutSession()">
+                                    <i class="fa-solid fa-play"></i> Start Mission
+                                </button>
+                                <button class="btn btn-primary pulse-btn" id="add-workout-btn">
+                                    <i class="fa-solid fa-plus"></i> Add Module
+                                </button>
+                            </div>
+                        </div>
+                        <div id="workout-list" class="workout-list">
+                            <!-- Workouts injected via JS -->
+                            <div class="empty-state">
+                                <i class="fa-solid fa-satellite-dish"></i>
+                                <p>No missions scheduled for this cycle.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Workout Panel (Hidden by default or Modal) -->
+                    <div id="add-workout-modal" class="modal hidden">
+                        <div class="modal-content glass-card">
+                            <span class="close-modal">&times;</span>
+                            <h2>Initialize Protocol</h2>
+                            <form id="add-workout-form">
+                                <div class="form-group">
+                                    <label>Exercise Name</label>
+                                    <input type="text" id="exercise-name" list="exercise-suggestions"
+                                        placeholder="Search protocol..." required>
+                                    <datalist id="exercise-suggestions"></datalist>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Muscle Group</label>
+                                        <select id="muscle-group">
+                                            <option value="Chest">Chest</option>
+                                            <option value="Back">Back</option>
+                                            <option value="Legs">Legs</option>
+                                            <option value="Shoulders">Shoulders</option>
+                                            <option value="Arms">Arms</option>
+                                            <option value="Core">Core</option>
+                                            <option value="Cardio">Cardio</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Difficulty</label>
+                                        <select id="difficulty">
+                                            <option value="Easy">Low Gravity</option>
+                                            <option value="Medium" selected>Standard</option>
+                                            <option value="Hard">High G</option>
+                                            <option value="Extreme">Supernova</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Sets</label>
+                                        <input type="number" id="sets" value="3" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Reps</label>
+                                        <input type="number" id="reps" value="10" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Weight (kg)</label>
+                                        <input type="number" id="weight" value="0" min="0">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-full btn-success launch-btn">
+                                    Launch Exercise <i class="fa-solid fa-rocket"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Exercise Library Section -->
+            <section id="library-section" class="library-container">
+                <div class="library-header">
+                    <h2>Exercise Database</h2>
+                    <div class="search-container">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="exercise-search" placeholder="Search protocol or muscle group...">
+                    </div>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="All">All</button>
+                    <button class="filter-tab" data-filter="Chest">Chest</button>
+                    <button class="filter-tab" data-filter="Back">Back</button>
+                    <button class="filter-tab" data-filter="Legs">Legs</button>
+                    <button class="filter-tab" data-filter="Shoulders">Shoulders</button>
+                    <button class="filter-tab" data-filter="Arms">Arms</button>
+                    <button class="filter-tab" data-filter="Core">Core</button>
+                    <button class="filter-tab" data-filter="Cardio">Cardio</button>
+                </div>
+
+                <!-- Exercise Grid -->
+                <div class="exercise-grid" id="exercise-grid">
+                    <!-- Cards injected via JS -->
+                </div>
+            </section>
+            <!-- Progress & Stats Section -->
+            <section id="tracker-section" class="tracker-container">
+                <div class="section-header">
+                    <h2>Mission Analytics</h2>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-card glass-card">
+                        <h3>Weekly Activity</h3>
+                        <canvas id="weeklyChart"></canvas>
+                    </div>
+                    <div class="chart-card glass-card">
+                        <h3>Muscle Distribution</h3>
+                        <canvas id="muscleChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="pr-panel glass-card">
+                        <div class="panel-header">
+                            <h3><i class="fa-solid fa-medal text-accent"></i> Personal Records</h3>
+                            <button class="btn-icon header-btn" id="add-pr-btn"><i
+                                    class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <ul id="pr-list" class="pr-list">
+                            <!-- Injected JS -->
+                            <li class="pr-item">
+                                <span class="pr-name">Bench Press</span>
+                                <span class="pr-value">100kg</span>
+                            </li>
+                            <li class="pr-item">
+                                <span class="pr-name">Deadlift</span>
+                                <span class="pr-value">140kg</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="heatmap-panel glass-card">
+                        <h3>Consistency Heatmap</h3>
+                        <div id="calendar-heatmap" class="heatmap-grid">
+                            <!-- 30 days visualization -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Workout Programs Section -->
+            <section id="programs-section" class="programs-container">
+                <div class="section-header">
+                    <h2>Flight Manuals</h2>
+                    <p class="section-subtitle">Pre-configured mission protocols</p>
+                </div>
+
+                <div class="programs-grid" id="programs-grid">
+                    <!-- Programs injected via JS -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Active Workout Mode Overlay -->
+    <div id="workout-timer-overlay" class="timer-overlay hidden">
+        <div class="timer-container glass-card">
+            <div class="timer-header">
+                <span id="timer-progress-text">Exercise 1 of 5</span>
+                <button class="btn-icon close-timer" onclick="closeTimer()"><i class="fa-solid fa-times"></i></button>
+            </div>
+
+            <div class="current-exercise">
+                <span class="next-label">Current Mission</span>
+                <h2 id="timer-exercise-name">Bench Press</h2>
+                <div class="set-counter">
+                    <span id="set-display">Set 1</span> <span class="divider">/</span> <span id="total-sets">4</span>
+                </div>
+            </div>
+
+            <div class="timer-circle">
+                <svg class="progress-ring" width="200" height="200">
+                    <circle class="progress-ring__circle" stroke="var(--primary-color)" stroke-width="8"
+                        fill="transparent" r="90" cx="100" cy="100" />
+                </svg>
+                <div class="timer-time">
+                    <span id="time-display">00:00</span>
+                    <span id="timer-label">ACTIVE</span>
+                </div>
+            </div>
+
+            <div class="timer-controls">
+                <button class="btn btn-secondary" onclick="toggleTimerState()">
+                    <i class="fa-solid fa-pause" id="play-pause-icon"></i>
+                </button>
+                <button class="btn btn-success btn-large" onclick="completeSet()">
+                    Complete Set <i class="fa-solid fa-check"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/exercises.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/planner.js"></script>
+    <script src="js/library.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/programs.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

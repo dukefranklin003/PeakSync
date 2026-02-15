@@ -1,0 +1,105 @@
+/* Responsive Design */
+
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .user-greeting {
+        text-align: left;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    .days-row {
+        gap: 0.2rem;
+    }
+
+    .day-pill {
+        padding: 0.5rem 0.2rem;
+        border-radius: 8px;
+    }
+
+    .day-name {
+        font-size: 0.6rem;
+    }
+
+    .day-number {
+        font-size: 1rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* Timer Overlay */
+    .timer-circle {
+        width: 150px;
+        height: 150px;
+    }
+
+    .progress-ring {
+        width: 150px;
+        height: 150px;
+    }
+
+    .progress-ring__circle {
+        r: 65;
+        cx: 75;
+        cy: 75;
+        stroke-dasharray: 408;
+        /* 2 * PI * 65 */
+    }
+
+    #time-display {
+        font-size: 2rem;
+    }
+
+    #timer-exercise-name {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .header-actions .btn {
+        width: 100%;
+    }
+
+    .workout-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .workout-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
